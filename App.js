@@ -1,28 +1,27 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
-import { bold } from 'ansi-colors';
 
 export default function App() {
 
-  const [nome, setNome] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [cadastros, setCadastros] = useState([]);
-  const [contador, setContador] = useState(10);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [contacts, setContacts] = useState([]);
+  const [count, setCount] = useState(10);
 
-  const capturarNome = (nome) => {
-    setNome(nome);
+  const captureName = (name) => {
+    setName(name);
   }
 
-  const capturaTelefone = (telefone) => {
-    setTelefone(telefone);
+  const capturePhone = (phone) => {
+    setPhone(phone);
   }
 
-  const adicionarCadastro = () => {
-    let cadastro = { nome: nome, telefone: telefone };
-    setCadastros(cadastros => {
-      setContador(contador + 2);
-      return [ { key: contador.toString(), value: cadastro },...cadastros];
+  const addContact = () => {
+    let contact = { name: name, phone: phone };
+    setContacts(contacts => {
+      setCount(count + 2);
+      return [ { key: count.toString(), value: contact },...contacts];
       
     });
   }
@@ -35,32 +34,32 @@ export default function App() {
         <TextInput
           placeholder="Nome"
           style={styles.Input}
-          onChangeText={capturarNome}
-          value={nome}
+          onChangeText={captureName}
+          value={name}
         />
 
         <TextInput
           placeholder="Telefone"
           style={styles.Input}
-          onChangeText={capturaTelefone}
-          value={telefone}
+          onChangeText={capturePhone}
+          value={phone}
         />
 
         <Button 
           style={styles.submitButton}
           title="Cadastrar"
-          onPress={adicionarCadastro}
+          onPress={addContact}
         />
       </View>
 
       <View style={styles.listArea}>
         <FlatList
-          data={cadastros}
+          data={contacts}
           renderItem={
-            cadastro =>
-            <View key={cadastro.item.value.key} style={styles.itemList}>
-              <Text style={styles.itemHeader}>Nome: {cadastro.item.value.nome}</Text>
-              <Text style={styles.itemBody}>Telefone: {cadastro.item.value.telefone}</Text>
+            contact =>
+            <View key={contact.item.value.key} style={styles.itemList}>
+              <Text style={styles.itemHeader}>Nome: {contact.item.value.name}</Text>
+              <Text style={styles.itemBody}>Telefone: {contact.item.value.phone}</Text>
             </View>
           }
         />
@@ -74,15 +73,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f0f0f7',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'center'
   },
   title: {
     fontWeight: "bold",
     color: '#32264d',
     fontSize: 20,
     lineHeight: 30,
-    marginBottom: 30,
+    paddingTop: 50
   },
   Input:{
     height: 54,
