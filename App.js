@@ -1,23 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
+import ContactInput from './components/ContactInput';
+import ContactItem from './components/ContactItem';
 
 export default function App() {
 
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  
   const [contacts, setContacts] = useState([]);
   const [count, setCount] = useState(10);
 
-  const captureName = (name) => {
-    setName(name);
-  }
+  
 
-  const capturePhone = (phone) => {
-    setPhone(phone);
-  }
-
-  const addContact = () => {
+  const addContact = (name, phone) => {
     let contact = { name: name, phone: phone };
     setContacts(contacts => {
       setCount(count + 2);
@@ -26,44 +20,32 @@ export default function App() {
     });
   }
 
+  const removeContacts = (keyToBeRemove) => {
+    setContacts(contacts => {
+      return contacts.filter((contact) => {
+        return contact.key !== keyToBeRemove;
+      });
+    });
+  }
+
   return (
     <View style={styles.container}>
-      <View style={styles.inputArea}>
-        <Text style={styles.title}>Dados Cadastrais</Text>
+      <ContactInput
+        addContact={addContact}
+      />
 
-        <TextInput
-          placeholder="Nome"
-          style={styles.Input}
-          onChangeText={captureName}
-          value={name}
-        />
-
-        <TextInput
-          placeholder="Telefone"
-          style={styles.Input}
-          onChangeText={capturePhone}
-          value={phone}
-        />
-
-        <Button 
-          style={styles.submitButton}
-          title="Cadastrar"
-          onPress={addContact}
-        />
-      </View>
-
-      <View style={styles.listArea}>
-        <FlatList
-          data={contacts}
-          renderItem={
-            contact =>
-            <View key={contact.item.value.key} style={styles.itemList}>
-              <Text style={styles.itemHeader}>Nome: {contact.item.value.name}</Text>
-              <Text style={styles.itemBody}>Telefone: {contact.item.value.phone}</Text>
-            </View>
-          }
-        />
-      </View>
+      <FlatList
+        data={contacts}
+        renderItem={
+          (contact) =>
+          <ContactItem
+            key={contact.item.value.key}
+            name={contact.item.value.name}
+            phone={contact.item.value.phone}
+            onDelete={removeContacts}
+          />
+        }
+      />
 
     </View>
   );
