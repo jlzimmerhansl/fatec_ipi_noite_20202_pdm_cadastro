@@ -1,56 +1,63 @@
 import React, { useState } from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  ScrollView,
-  TextInput,
-  Button,
-  FlatList,
-} from 'react-native';
+import { View, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { useDispatch } from 'react-redux';
+
 import Colors from '../constants/Colors';
 import ContactInput from '../components/ContactInput';
 import ContactItem from '../components/ContactItem';
+import * as contactsActions from '../store/contacts-actions';
 
 const NewContactScreen = (props) => {
-  const [contacts, setContacts] = useState([]);
-  const [count, setCount] = useState(10);
+  const dispatch = useDispatch();
+  //const [contacts, setContacts] = useState([]);
+  //const [count, setCount] = useState(10);
+  //const [newContact, setNewContact] = useState('');
+  //const [imageUri, setImageUri] = useState();
+  const [contact, setContact] = useState({
+    key: null,
+    name: '',
+    phone: '',
+    imageUri: '',
+  });
 
-  const addContact = (name, phone) => {
-    let contact = { name: name, phone: phone };
-    setContacts((contacts) => {
-      setCount(count + 2);
-      return [{ key: count.toString(), value: contact }, ...contacts];
-    });
+  const saveContact = (key, name, phone, image) => {
+    dispatch(contactsActions.addContact(null, name, phone, image));
+    props.navigation.goBack();
   };
 
-  const removeContacts = (keyToBeRemove) => {
-    setContacts((contacts) => {
-      return contacts.filter((contact) => {
-        return contact.key !== keyToBeRemove;
-      });
-    });
-  };
+  //const addContact = (name, phone) => {
+  //  let contact = { name: name, phone: phone };
+  //  setContacts((contacts) => {
+  //    setCount(count + 2);
+  //    return [{ key: count.toString(), value: contact }, ...contacts];
+  //  });
+  //};
+
+  //const photoTaked = (imageUri) => {
+  //  setImageUri(imageUri);
+  //};
+  //
+  //const removeContacts = (keyToBeRemove) => {
+  //  setContacts((contacts) => {
+  //    return contacts.filter((contact) => {
+  //      return contact.key !== keyToBeRemove;
+  //    });
+  //  });
+  //};
 
   return (
     <ScrollView>
       <View style={styles.container}>
-        <ContactInput addContact={addContact} />
-
-        <FlatList
-          data={contacts}
-          renderItem={(contact) => (
-            <ContactItem
-              key={contact.item.value.key}
-              name={contact.item.value.name}
-              phone={contact.item.value.phone}
-              onDelete={removeContacts}
-            />
-          )}
-        />
+        <ContactInput addContact={saveContact} contact={contact} />
       </View>
     </ScrollView>
   );
+};
+
+NewContactScreen.navigationOptions = (dataNav) => {
+  return {
+    headerTitle: 'Novo Contato',
+  };
 };
 
 const styles = StyleSheet.create({
