@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, FlatList, Platform, Text } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ButtonHeader from '../components/ButtonHeader';
 import ContactItem from '../components/ContactItem';
 import * as contactActions from '../store/contacts-actions';
@@ -10,6 +9,11 @@ import * as contactActions from '../store/contacts-actions';
 const ContactsListScreen = (props) => {
   const dispatch = useDispatch();
   const contacts = useSelector((state) => state.contacts.contacts);
+
+  useEffect(() => {
+    dispatch(contactActions.listContacts());
+  }, [dispatch]);
+
   const removeContacts = (key) => {
     dispatch(contactActions.removeContacts(key));
   };

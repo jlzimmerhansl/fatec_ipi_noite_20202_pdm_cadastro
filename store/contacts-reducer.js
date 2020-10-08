@@ -1,4 +1,4 @@
-import { ADD_CONTACT, REMOVE_CONTACT } from './contacts-actions';
+import { ADD_CONTACT, REMOVE_CONTACT, LIST_CONTACTS } from './contacts-actions';
 import Contact from '../models/Contact';
 
 const initialState = {
@@ -9,10 +9,10 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_CONTACT:
       const contact = new Contact(
-        new Date().toString(),
+        action.dataContact.id.toString(),
         action.dataContact.name,
         action.dataContact.phone,
-        action.dataContact.image
+        action.dataContact.imageUri
       );
       return {
         contacts: state.contacts
@@ -26,6 +26,13 @@ export default (state = initialState, action) => {
         contacts: state.contacts.filter((contact) => {
           return contact.key != action.dataContact.key;
         }),
+      };
+    case LIST_CONTACTS:
+      return {
+        contacts: action.contacts.map(
+          (cad) =>
+            new Contact(cad.id.toString(), cad.name, cad.phone, cad.imageUri)
+        ),
       };
     default:
       return state;
