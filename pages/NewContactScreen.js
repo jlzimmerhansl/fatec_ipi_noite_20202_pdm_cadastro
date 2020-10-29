@@ -18,10 +18,21 @@ const NewContactScreen = (props) => {
     name: '',
     phone: '',
     imageUri: '',
+    latitude: 0,
+    longitude: 0,
   });
 
-  const saveContact = (key, name, phone, image) => {
-    dispatch(contactsActions.addContact(null, name, phone, image));
+  const saveContact = (key, name, phone, imageUri, latitude, longitude) => {
+    dispatch(
+      contactsActions.addContact(
+        null,
+        name,
+        phone,
+        imageUri,
+        latitude,
+        longitude
+      )
+    );
     props.navigation.goBack();
   };
 

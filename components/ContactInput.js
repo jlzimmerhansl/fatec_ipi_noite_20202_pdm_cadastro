@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import TakePhoto from '../components/TakePhoto';
 import * as contactsActions from '../store/contacts-actions';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import CaptureLocation from '../components/CaptureLocation';
 
 const ContactInput = (props) => {
   const [name, setName] = useState(props.contact.name);
@@ -40,6 +41,7 @@ const ContactInput = (props) => {
         value={phone}
       />
       <TakePhoto onPhotoTaked={photoTaked} contact={props.contact} />
+      <CaptureLocation />
       <Button
         style={styles.submitButton}
         title="Cadastrar"

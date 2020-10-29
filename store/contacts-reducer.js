@@ -12,7 +12,10 @@ export default (state = initialState, action) => {
         action.dataContact.id.toString(),
         action.dataContact.name,
         action.dataContact.phone,
-        action.dataContact.imageUri
+        action.dataContact.imageUri,
+        action.dataContact.latitude,
+        action.dataContact.longitude,
+        new Date().toString()
       );
       return {
         contacts: state.contacts
@@ -31,7 +34,15 @@ export default (state = initialState, action) => {
       return {
         contacts: action.contacts.map(
           (cad) =>
-            new Contact(cad.id.toString(), cad.name, cad.phone, cad.imageUri)
+            new Contact(
+              cad.id.toString(),
+              cad.name,
+              cad.phone,
+              cad.imageUri,
+              cad.latitude,
+              cad.longitude,
+              cad.registerHour
+            )
         ),
       };
     default:

@@ -10,8 +10,8 @@ const ContactItem = (props) => {
     >
       <Image style={styles.image} source={{ uri: props.image }} />
       <View style={styles.itemList}>
-        <Text style={styles.itemHeader}>Nome: {props.contact.name}</Text>
-        <Text style={styles.itemBody}>Telefone: {props.contact.phone}</Text>
+        <Text style={styles.itemHeader}>Nome:{props.contact.name}</Text>
+        <Text style={styles.itemBody}>Telefone:{props.contact.phone}</Text>
       </View>
     </TouchableOpacity>
   );

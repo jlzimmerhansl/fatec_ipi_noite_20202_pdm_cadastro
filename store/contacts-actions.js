@@ -4,7 +4,14 @@ export const LIST_CONTACTS = 'LIST_CONTACTS';
 import * as FileSystem from 'expo-file-system';
 import { insertContact, seachContacts } from '../helpers/db';
 
-export const addContact = (name, phone, imageUri) => {
+export const addContact = (
+  name,
+  phone,
+  imageUri,
+  latitude,
+  longitude,
+  registerHour
+) => {
   return async (dispatch) => {
     const fileName = imageUri.split('/').pop();
     const newPath = FileSystem.documentDirectory + fileName;
@@ -13,16 +20,26 @@ export const addContact = (name, phone, imageUri) => {
         from: imageUri,
         to: newPath,
       });
-      const resultDb = await insertContact(name, phone, newPath);
+      const resultDb = await insertContact(
+        name,
+        phone,
+        newPath,
+        latitude,
+        longitude,
+        registerHour
+      );
       console.log(resultDb);
 
       dispatch({
         type: ADD_CONTACT,
         dataContact: {
-          key: resultDb.insertContact,
+          key: resultDb.insertId,
           name: name,
           phone: phone,
           imageUri: newPath,
+          latitude: latitude,
+          longitude: longitude,
+          registerHour: registerHour,
         },
       });
     } catch (err) {
