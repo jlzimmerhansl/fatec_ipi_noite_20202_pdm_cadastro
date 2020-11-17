@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Button, Image, Text, StyleSheet } from 'react-native';
+import { View, Button, Image, Text, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Colors from '../constants/Colors';
 
@@ -9,15 +9,52 @@ const TakePhoto = (props) => {
   const [imageUri, setImageUri] = useState(props.contact.imageUri);
 
   const takePhoto = async () => {
-    const photo = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 4],
-      quality: 1,
-    });
-    //console.log(photo);
-    setImageUri(photo.uri);
-    //console.log(imageUri);
-    props.onPhotoTaked(photo.uri);
+    Alert.alert(
+      'Camera ou Galeria?',
+      'Deseja tirar a foto pela câmenra ou selecionar na galeria?',
+      [
+        {
+          text: 'Galeria',
+          onPress: () => {
+            const photo = ImagePicker.launchImageLibraryAsync({
+              allowsEditing: true,
+              aspect: [4, 4],
+              quality: 1,
+            });
+            //console.log(photo);
+            setImageUri(photo.uri);
+            //console.log(imageUri);
+            props.onPhotoTaked(photo.uri);
+          },
+        },
+        {
+          text: 'Camera',
+          onPress: () => {
+            const photo = ImagePicker.launchCameraAsync({
+              allowsEditing: true,
+              aspect: [4, 4],
+              quality: 1,
+            });
+            //console.log(photo);
+            setImageUri(photo.uri);
+            //console.log(imageUri);
+            props.onPhotoTaked(photo.uri);
+          },
+        },
+      ]
+    );
+  };
+
+  const removerLembrete = (chave) => {
+    Alert.alert('Apagar?', 'Quer mesmo apagar esse lembete?', [
+      { text: 'Cancelar' },
+      {
+        text: 'Confimar',
+        onPress: () => {
+          db.collection('lembretes').doc(chave).delete();
+        },
+      },
+    ]);
   };
 
   return (
